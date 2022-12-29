@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Movie Details</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="movie_detail.css">
+</head>
+<body>
+  <div id="movie-details">
+    <img id="poster" src="" alt="Poster">
+    <div id="info">
+      <h1 id="title"></h1>
+      <p id="release-date"></p>
+      <p id="overview"></p>
+    </div>
+  </div>
+  <script>
+    function showMovieDetails(movieId) {
+      // make a GET request to the TMDB API using fetch
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=745f19f07f9c65ca17f6e8e625ba3f6a&language=ar-SA`)
+        .then(response => response.json())
+        .then(data => {
+          // get the movie details elements
+          const poster = document.getElementById('poster');
+          const title = document.getElementById('title');
+          const releaseDate = document.getElementById('release-date');
+          const overview = document.getElementById('overview');
+
+          // set the movie details
+          poster.src = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+          title.textContent = data.title;
+          releaseDate.textContent = `Released: ${data.release_date}`;
+          overview.textContent = data.overview;
+        });
+    }
+
+    // get the movie ID from the URL query string
+    const searchParams = new URLSearchParams(window.location.search);
+    const movieId = searchParams.get('id');
+
+    // show the movie details for the movie with the specified ID
+    showMovieDetails(movieId);
+  </script>
+</body>
+</html>
